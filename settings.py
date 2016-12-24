@@ -75,6 +75,7 @@ BOXES = {
 # one of the boxes you defined, it will be checked to see if the neighborhood name it was listed under matches one
 # of these.  This is less accurate than the boxes, because it relies on the owner to set the right neighborhood,
 # but it also catches listings that don't have coordinates (many listings are missing this info).
+# NEIGHBORHOODS = ["berkeley north", "berkeley", "rockridge", "adams point", "oakland lake merritt", "cow hollow", "piedmont", "pac hts", "pacific heights", "lower haight", "inner sunset", "outer sunset", "presidio", "palo alto", "richmond / seacliff", "haight ashbury", "alameda", "twin peaks", "noe valley", "bernal heights", "glen park", "sunset", "mission district", "potrero hill", "dogpatch"]
 NEIGHBORHOODS = ["berkeley north", "berkeley", "rockridge", "adams point", "oakland lake merritt", "cow hollow", "piedmont", "pac hts", "pacific heights", "lower haight", "inner sunset", "outer sunset", "presidio", "palo alto", "richmond / seacliff", "haight ashbury", "alameda", "twin peaks", "noe valley", "bernal heights", "glen park", "sunset", "mission district", "potrero hill", "dogpatch"]
 
 ## Transit preferences
@@ -92,13 +93,17 @@ TRANSIT_STATIONS = {
     "north_berkeley_bart": [37.8713411,-122.2849758]
 }
 
+SHUTTLE_STOPS = {}
+#http://stackoverflow.com/questions/13712132/extract-coordinates-from-kml-batchgeo-file-with-python
+
 ## Search type preferences
 
 # The Craigslist section underneath housing that you want to search in.
 # For instance, https://sfbay.craigslist.org/search/apa find apartments for rent.
 # https://sfbay.craigslist.org/search/sub finds sublets.
 # You only need the last 3 letters of the URLs.
-CRAIGSLIST_HOUSING_SECTION = 'apa'
+# CRAIGSLIST_HOUSING_SECTION = 'apa'
+CRAIGSLIST_HOUSING_SECTION = 'roo'
 
 ## System settings
 
