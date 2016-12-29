@@ -8,15 +8,15 @@ def coord_distance(lat1, lon1, lat2, lon2):
     :param lon1: Point 1 longitude.
     :param lat2: Point two latitude.
     :param lon2: Point two longitude.
-    :return: Kilometer distance.
+    :return: Distance in miles.
     """
     lon1, lat1, lon2, lat2 = map(math.radians, [lon1, lat1, lon2, lat2])
     dlon = lon2 - lon1
     dlat = lat2 - lat1
     a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
-    c = 2 * math.asin(math.sqrt(a))
-    km = 6367 * c
-    return km
+    km = 2 * 6367 * math.asin(math.sqrt(a))
+    mi = 0.621371 * km
+    return mi
 
 def in_box(coords, box):
     """
