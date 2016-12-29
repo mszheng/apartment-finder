@@ -3,7 +3,7 @@ import os
 ## Price
 
 # The minimum rent you want to pay per month.
-MIN_PRICE = 1500
+MIN_PRICE = 1200
 
 # The maximum rent you want to pay per month.
 MAX_PRICE = 2000
@@ -18,7 +18,7 @@ CRAIGSLIST_SITE = 'sfbay'
 # What Craigslist subdirectories to search on.
 # For instance, https://sfbay.craigslist.org/eby/ is the East Bay, and https://sfbay.craigslist.org/sfc/ is San Francisco.
 # You only need the last three letters of the URLs.
-AREAS = ["eby", "sfc", "sby", "nby"]
+AREAS = ["sfc"]
 
 # A list of neighborhoods and coordinates that you want to look for apartments in.  Any listing that has coordinates
 # attached will be checked to see which area it is in.  If there's a match, it will be annotated with the area
@@ -76,7 +76,7 @@ BOXES = {
 # of these.  This is less accurate than the boxes, because it relies on the owner to set the right neighborhood,
 # but it also catches listings that don't have coordinates (many listings are missing this info).
 # NEIGHBORHOODS = ["berkeley north", "berkeley", "rockridge", "adams point", "oakland lake merritt", "cow hollow", "piedmont", "pac hts", "pacific heights", "lower haight", "inner sunset", "outer sunset", "presidio", "palo alto", "richmond / seacliff", "haight ashbury", "alameda", "twin peaks", "noe valley", "bernal heights", "glen park", "sunset", "mission district", "potrero hill", "dogpatch"]
-NEIGHBORHOODS = ["berkeley north", "berkeley", "rockridge", "adams point", "oakland lake merritt", "cow hollow", "piedmont", "pac hts", "pacific heights", "lower haight", "inner sunset", "outer sunset", "presidio", "palo alto", "richmond / seacliff", "haight ashbury", "alameda", "twin peaks", "noe valley", "bernal heights", "glen park", "sunset", "mission district", "potrero hill", "dogpatch"]
+NEIGHBORHOODS = ["lower haight", "mission district", "potrero hill", "dogpatch", "mission bay", "south beach"]
 
 ## Transit preferences
 
@@ -85,6 +85,8 @@ MAX_TRANSIT_DIST = 2 # kilometers
 
 # Transit stations you want to check against.  Every coordinate here will be checked against each listing,
 # and the closest station name will be added to the result and posted into Slack.
+
+# TODO update transit stations and shuttle stops
 TRANSIT_STATIONS = {
     "oakland_19th_bart": [37.8118051,-122.2720873],
     "macarthur_bart": [37.8265657,-122.2686705],
@@ -93,7 +95,8 @@ TRANSIT_STATIONS = {
     "north_berkeley_bart": [37.8713411,-122.2849758]
 }
 
-SHUTTLE_STOPS = {}
+SHUTTLE_STOPS = None  # load from private.py
+
 #http://stackoverflow.com/questions/13712132/extract-coordinates-from-kml-batchgeo-file-with-python
 
 ## Search type preferences
