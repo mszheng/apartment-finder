@@ -75,24 +75,30 @@ BOXES = {
 # one of the boxes you defined, it will be checked to see if the neighborhood name it was listed under matches one
 # of these.  This is less accurate than the boxes, because it relies on the owner to set the right neighborhood,
 # but it also catches listings that don't have coordinates (many listings are missing this info).
-# NEIGHBORHOODS = ["berkeley north", "berkeley", "rockridge", "adams point", "oakland lake merritt", "cow hollow", "piedmont", "pac hts", "pacific heights", "lower haight", "inner sunset", "outer sunset", "presidio", "palo alto", "richmond / seacliff", "haight ashbury", "alameda", "twin peaks", "noe valley", "bernal heights", "glen park", "sunset", "mission district", "potrero hill", "dogpatch"]
 NEIGHBORHOODS = ["lower haight", "mission district", "potrero hill", "dogpatch", "mission bay", "south beach"]
 
 ## Transit preferences
 
 # The farthest you want to live from a transit stop.
-MAX_TRANSIT_DIST = 2 # kilometers
+MAX_TRANSIT_DIST = 1.2  # kilometers
 
 # Transit stations you want to check against.  Every coordinate here will be checked against each listing,
 # and the closest station name will be added to the result and posted into Slack.
 
-# TODO update transit stations and shuttle stops
 TRANSIT_STATIONS = {
-    "oakland_19th_bart": [37.8118051,-122.2720873],
-    "macarthur_bart": [37.8265657,-122.2686705],
-    "rockridge_bart": [37.841286,-122.2566329],
-    "downtown_berkeley_bart": [37.8629541,-122.276594],
-    "north_berkeley_bart": [37.8713411,-122.2849758]
+    '4th_st_caltrain': [37.776685, -122.3948568],
+    '22nd_st_caltrain': [37.7575079, -122.3924354],
+    '24th_st_mission_bart': [37.7524766,-122.4181464],
+    '16th_st_mission_bart': [37.7650578,-122.4197048],
+    'civic_center_bart': [37.7797547,-122.4141526],
+    'powell_bart': [37.7844693,-122.4079835],
+    'montgomery_bart': [37.7893447,-122.4011493],
+    'embarcadero_bart': [37.7929057,-122.3970616],
+    # "oakland_19th_bart": [37.8118051,-122.2720873],
+    # "macarthur_bart": [37.8265657,-122.2686705],
+    # "rockridge_bart": [37.841286,-122.2566329],
+    # "downtown_berkeley_bart": [37.8629541,-122.276594],
+    # "north_berkeley_bart": [37.8713411,-122.2849758]
 }
 
 SHUTTLE_STOPS = None  # load from private.py
