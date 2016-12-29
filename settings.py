@@ -25,26 +25,26 @@ AREAS = ["sfc"]
 # name.  If no match, the neighborhood field, which is a string, will be checked to see if it matches
 # anything in NEIGHBORHOODS.
 BOXES = {
-    "adams_point": [
-        [37.80789, -122.25000],
-        [37.81589,	-122.26081],
-    ],
-    "piedmont": [
-        [37.82240, -122.24768],
-        [37.83237, -122.25386],
-    ],
-    "rockridge": [
-        [37.83826, -122.24073],
-        [37.84680, -122.25944],
-    ],
-    "berkeley": [
-        [37.86226, -122.25043],
-        [37.86781, -122.26502],
-    ],
-    "north_berkeley": [
-        [37.86425, -122.26330],
-        [37.87655, -122.28974],
-    ],
+    # "adams_point": [
+    #     [37.80789, -122.25000],
+    #     [37.81589, -122.26081],
+    # ],
+    # "piedmont": [
+    #     [37.82240, -122.24768],
+    #     [37.83237, -122.25386],
+    # ],
+    # "rockridge": [
+    #     [37.83826, -122.24073],
+    #     [37.84680, -122.25944],
+    # ],
+    # "berkeley": [
+    #     [37.86226, -122.25043],
+    #     [37.86781, -122.26502],
+    # ],
+    # "north_berkeley": [
+    #     [37.86425, -122.26330],
+    #     [37.87655, -122.28974],
+    # ],
     "pac_heights": [
         [37.79124, -122.42381],
         [37.79850, -122.44784],
@@ -61,21 +61,22 @@ BOXES = {
         [37.75451, -122.46422],
         [37.76258, -122.50825],
     ],
-    "richmond": [
-        [37.77188, -122.47263],
-        [37.78029, -122.51005],
-    ],
-    "presidio": [
-        [37.77805, -122.43959],
-        [37.78829, -122.47151],
-    ]
+    # "richmond": [
+    #     [37.77188, -122.47263],
+    #     [37.78029, -122.51005],
+    # ],
+    # "presidio": [
+    #     [37.77805, -122.43959],
+    #     [37.78829, -122.47151],
+    # ]
 }
 
 # A list of neighborhood names to look for in the Craigslist neighborhood name field. If a listing doesn't fall into
 # one of the boxes you defined, it will be checked to see if the neighborhood name it was listed under matches one
 # of these.  This is less accurate than the boxes, because it relies on the owner to set the right neighborhood,
 # but it also catches listings that don't have coordinates (many listings are missing this info).
-NEIGHBORHOODS = ["lower haight", "mission district", "potrero hill", "dogpatch", "mission bay", "south beach"]
+NEIGHBORHOODS = ["lower haight", "mission district", "potrero hill", "dogpatch", "mission bay", "south beach", "soma",
+                 "noe valley"]
 
 ## Transit preferences
 
@@ -88,12 +89,12 @@ MAX_TRANSIT_DIST = 0.75  # miles
 TRANSIT_STATIONS = {
     '4th_st_caltrain': [37.776685, -122.3948568],
     '22nd_st_caltrain': [37.7575079, -122.3924354],
-    '24th_st_mission_bart': [37.7524766,-122.4181464],
-    '16th_st_mission_bart': [37.7650578,-122.4197048],
-    'civic_center_bart': [37.7797547,-122.4141526],
-    'powell_bart': [37.7844693,-122.4079835],
-    'montgomery_bart': [37.7893447,-122.4011493],
-    'embarcadero_bart': [37.7929057,-122.3970616],
+    '24th_st_mission_bart': [37.7524766, -122.4181464],
+    '16th_st_mission_bart': [37.7650578, -122.4197048],
+    'civic_center_bart': [37.7797547, -122.4141526],
+    'powell_bart': [37.7844693, -122.4079835],
+    'montgomery_bart': [37.7893447, -122.4011493],
+    'embarcadero_bart': [37.7929057, -122.3970616],
     # "oakland_19th_bart": [37.8118051,-122.2720873],
     # "macarthur_bart": [37.8265657,-122.2686705],
     # "rockridge_bart": [37.841286,-122.2566329],
@@ -103,7 +104,7 @@ TRANSIT_STATIONS = {
 
 SHUTTLE_STOPS = None  # load from private.py
 
-#http://stackoverflow.com/questions/13712132/extract-coordinates-from-kml-batchgeo-file-with-python
+# http://stackoverflow.com/questions/13712132/extract-coordinates-from-kml-batchgeo-file-with-python
 
 ## Search type preferences
 
@@ -119,7 +120,7 @@ CRAIGSLIST_HOUSING_SECTION = 'roo'
 # How long we should sleep between scrapes of Craigslist.
 # Too fast may get rate limited.
 # Too slow may miss listings.
-SLEEP_INTERVAL = 20 * 60 # 20 minutes
+SLEEP_INTERVAL = 20 * 60  # 20 minutes
 
 # Which slack channel to post the listings into.
 SLACK_CHANNEL = "#housing"
