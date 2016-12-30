@@ -8,6 +8,7 @@ MIN_PRICE = 1200
 # The maximum rent you want to pay per month.
 MAX_PRICE = 2000
 
+
 ## Location preferences
 
 # The Craigslist site you want to search on.
@@ -24,6 +25,7 @@ AREAS = ["sfc"]
 # attached will be checked to see which area it is in.  If there's a match, it will be annotated with the area
 # name.  If no match, the neighborhood field, which is a string, will be checked to see if it matches
 # anything in NEIGHBORHOODS.
+# TODO update boxes
 BOXES = {
     # "adams_point": [
     #     [37.80789, -122.25000],
@@ -78,11 +80,12 @@ BOXES = {
 NEIGHBORHOODS = ["lower haight", "mission district", "potrero hill", "dogpatch", "mission bay", "south beach", "soma",
                  "noe valley"]
 
+
 ## Transit preferences
 
 # The farthest you want to live from a transit stop.
 MAX_TRANSIT_DIST = 1.5  # miles
-MAX_SHUTTLE_DIST = 20  # miles
+MAX_SHUTTLE_DIST = 0.75  # miles
 
 
 # Transit stations you want to check against.  Every coordinate here will be checked against each listing,

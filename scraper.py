@@ -61,7 +61,7 @@ def scrape_area(area):
             result = next(gen)
         except StopIteration:
             break
-        except Exception:  # TODO add specific exceptions
+        except Exception:
             continue
 
         listing = session.query(Listing).filter_by(cl_id=result["id"]).first()
@@ -80,8 +80,7 @@ def scrape_area(area):
                 lon = result["geotag"][1]
 
             # Annotate the result with information about the area it's in and points of interest near it.
-            geo_data = find_points_of_interest(result["geotag"], result["where"])
-            result.update(geo_data)
+            result.update(find_points_of_interest(result["geotag"], result["where"]))
 
             # Try parsing the price.
             price = 0
@@ -115,7 +114,7 @@ def scrape_area(area):
             #     results.append(result)
 
             # Return the result if it's near a shuttle stop.
-            if result["shuttle_dist"] < settings.MAX_SHUTTLE_DIST:
+            if result["shuttle_dist"] < settings.MAX_SHUTTLE_DIST and len(result["area"]) > 0:
                 results.append(result)
 
     return results

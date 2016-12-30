@@ -39,10 +39,10 @@ def post_listing_to_slack(sc, listing):
     :param listing: A record of the listing.
     """
     desc1 = "{0} | {1} | {2}\n".format(listing["area"], listing["price"], listing["name"])
-    desc2 = "{0:2.2f} mi to {1} | {2:2.2f} mi to {3}\n".format(listing["transit_dist"],
-                                                               listing["transit_stop"],
-                                                               listing["shuttle_dist"],
-                                                               listing["shuttle_stop"])
+    desc2 = "{0:2.2f} mi to {1} | {2:2.2f} mi to {3} shuttle\n".format(listing["transit_dist"],
+                                                                       listing["transit_stop"],
+                                                                       listing["shuttle_dist"],
+                                                                       listing["shuttle_stop"])
     desc3 = "<{0}>".format(listing["url"])
 
     sc.api_call(
@@ -73,7 +73,7 @@ def find_points_of_interest(geotag, location):
                 area = hood
 
         # Look to see if the listing is in any of the neighborhood boxes we defined.
-        if not area:
+        if len(area) == 0:
             for hood, box_coords in settings.BOXES.items():
                 if in_box(geotag, box_coords):
                     area = hood
