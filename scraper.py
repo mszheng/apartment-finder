@@ -61,12 +61,10 @@ def scrape_area(area):
             result = next(gen)
         except StopIteration:
             break
-        except Exception:
+        except Exception:  # TODO add specific exceptions
             continue
 
         listing = session.query(Listing).filter_by(cl_id=result["id"]).first()
-
-        # listing = None
 
         # Don't store the listing if it already exists.
         if listing is None:
@@ -81,24 +79,22 @@ def scrape_area(area):
                 lat = result["geotag"][0]
                 lon = result["geotag"][1]
 
-                # Annotate the result with information about the area it's in and points of interest near it.
-                geo_data = find_points_of_interest(result["geotag"], result["where"])
-                result.update(geo_data)
-            else:
-                result["area"] = ""
-                result["transit"] = ""
+            # Annotate the result with information about the area it's in and points of interest near it.
+            geo_data = find_points_of_interest(result["geotag"], result["where"])
+            result.update(geo_data)
 
             # Try parsing the price.
             price = 0
             try:
                 price = float(result["price"].replace("$", ""))
-            except Exception:
+            except (TypeError, ValueError):
                 pass
 
             # Create the listing object.
             listing = Listing(
                 link=result["url"],
                 created=parse(result["datetime"]),
+                geotag=str(result["geotag"]),
                 lat=lat,
                 lon=lon,
                 name=result["name"],
@@ -106,7 +102,8 @@ def scrape_area(area):
                 location=result["where"],
                 cl_id=result["id"],
                 area=result["area"],
-                transit_stop=result["transit"]
+                transit_stop=result["transit_stop"],
+                shuttle_stop=result["shuttle_stop"]
             )
 
             # Save the listing so we don't grab it again.
@@ -114,7 +111,11 @@ def scrape_area(area):
             session.commit()
 
             # Return the result if it's near a transit station, or if it is in an area we defined.
-            if len(result["transit"]) > 0 or len(result["area"]) > 0:
+            # if result["transit_stop"] < settings.MAX_TRANSIT_DIST or len(result["area"]) > 0:
+            #     results.append(result)
+
+            # Return the result if it's near a shuttle stop.
+            if result["shuttle_dist"] < settings.MAX_SHUTTLE_DIST:
                 results.append(result)
 
     return results

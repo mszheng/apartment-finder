@@ -38,14 +38,15 @@ def post_listing_to_slack(sc, listing):
     :param sc: A slack client.
     :param listing: A record of the listing.
     """
-    desc = "{0} | {1} | {2:2.2f} mi to {3} | \n{4} | <{5}>".format(listing["area"],
-                                                                   listing["price"],
-                                                                   listing["transit_dist"],
-                                                                   listing["transit"],
-                                                                   listing["name"],
-                                                                   listing["url"])
+    desc1 = "{0} | {1} | {2}\n".format(listing["area"], listing["price"], listing["name"])
+    desc2 = "{0:2.2f} mi to {1} | {2:2.2f} mi to {3}\n".format(listing["transit_dist"],
+                                                               listing["transit_stop"],
+                                                               listing["shuttle_dist"],
+                                                               listing["shuttle_stop"])
+    desc3 = "<{0}>".format(listing["url"])
+
     sc.api_call(
-        "chat.postMessage", channel=settings.SLACK_CHANNEL, text=desc,
+        "chat.postMessage", channel=settings.SLACK_CHANNEL, text=desc1+desc2+desc3,
         username='cl_rooms', icon_emoji=':house:'
     )
 
@@ -58,39 +59,43 @@ def find_points_of_interest(geotag, location):
     the listing was posted.
     :return: A dictionary containing annotations.
     """
-    area_found = False
+
     area = ""
-    min_dist = None
-    near_transit = False
-    transit_dist = "N/A"
     transit_stop = ""
+    transit_dist = float('inf')
+    shuttle_stop = ""
+    shuttle_dist = float('inf')
 
-    # Check to see if the string description of the neighborhood matches anything in our list of neighborhoods.
-    for hood in settings.NEIGHBORHOODS:
-        if hood.lower() in location.lower():
-            area = hood
-            area_found = True
-
-    # Look to see if the listing is in any of the neighborhood boxes we defined.
-    if not area_found:
-        for hood, box_coords in settings.BOXES.items():
-            if in_box(geotag, box_coords):
+    if geotag is not None:
+        # Check to see if the string description of the neighborhood matches anything in our list of neighborhoods.
+        for hood in settings.NEIGHBORHOODS:
+            if hood.lower() in location.lower():
                 area = hood
 
-    # Check to see if the listing is near any transit stations.
-    for station, coords in settings.TRANSIT_STATIONS.items():
-        dist = coord_distance(coords[0], coords[1], geotag[0], geotag[1])
-        if (min_dist is None or dist < min_dist) and dist < settings.MAX_TRANSIT_DIST:
-            transit_stop = station
-            near_transit = True
+        # Look to see if the listing is in any of the neighborhood boxes we defined.
+        if not area:
+            for hood, box_coords in settings.BOXES.items():
+                if in_box(geotag, box_coords):
+                    area = hood
 
-        if (min_dist is None or dist < min_dist):
-            transit_dist = dist
+        # Find the closest transit stations.
+        for station, coords in settings.TRANSIT_STATIONS.items():
+            dist = coord_distance(coords[0], coords[1], geotag[0], geotag[1])
+            if dist < transit_dist:
+                transit_stop = station
+                transit_dist = dist
+
+        # Find the closest shuttle stop.
+        for stop, coords in settings.SHUTTLE_STOPS.items():
+            dist = coord_distance(coords[0], coords[1], geotag[0], geotag[1])
+            if dist < shuttle_dist:
+                shuttle_stop = stop
+                shuttle_dist = dist
 
     return {
-        # "area_found": area_found,
         "area": area,
-        # "near_transit": near_transit,
+        "transit_stop": transit_stop,
         "transit_dist": transit_dist,
-        "transit": transit_stop
+        "shuttle_stop": shuttle_stop,
+        "shuttle_dist": shuttle_dist,
     }

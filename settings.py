@@ -81,7 +81,9 @@ NEIGHBORHOODS = ["lower haight", "mission district", "potrero hill", "dogpatch",
 ## Transit preferences
 
 # The farthest you want to live from a transit stop.
-MAX_TRANSIT_DIST = 0.75  # miles
+MAX_TRANSIT_DIST = 1.5  # miles
+MAX_SHUTTLE_DIST = 20  # miles
+
 
 # Transit stations you want to check against.  Every coordinate here will be checked against each listing,
 # and the closest station name will be added to the result and posted into Slack.
