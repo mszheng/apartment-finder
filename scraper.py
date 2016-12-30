@@ -72,15 +72,15 @@ def scrape_area(area):
                 # If there is no string identifying which neighborhood the result is from, skip it.
                 continue
 
+            # Annotate the result with information about the area it's in and points of interest near it.
+            result.update(find_points_of_interest(result["geotag"], result["where"]))
+
             lat = 0
             lon = 0
             if result["geotag"] is not None:
                 # Assign the coordinates.
                 lat = result["geotag"][0]
                 lon = result["geotag"][1]
-
-            # Annotate the result with information about the area it's in and points of interest near it.
-            result.update(find_points_of_interest(result["geotag"], result["where"]))
 
             # Try parsing the price.
             price = 0
