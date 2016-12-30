@@ -1,4 +1,4 @@
--e git+git://github.com/juliomalegria/python-craigslist.git#egg=python-craigslist
+python-craigslist>=1.0.3
 sqlalchemy
 python-dateutil
 #ipython
