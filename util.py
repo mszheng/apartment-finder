@@ -1,5 +1,6 @@
 import settings
 import math
+import googlemaps
 
 
 def coord_distance(lat1, lon1, lat2, lon2):
@@ -44,36 +45,52 @@ def post_listing_to_slack(sc, channel, listing):
     desc1 = '{0} | {1} | {2}\n'.format(listing['neighborhood'],
                                        listing['price'],
                                        listing['name'])
-    desc2 = '{0:2.2f} mi to {1} | {2:2.2f} mi to {3} shuttle\n'
-    desc2 = desc2.format(listing['transit_dist'],
-                         listing['transit_stop'],
-                         listing['shuttle_dist'],
-                         listing['shuttle_stop'])
 
-    desc3 = '<{0}>'.format(listing['url'])
+    desc2 = '{0:2.0f} min walk to {1} shuttle ({2:2.2f} mi)\n'
+    desc2 = desc2.format(listing['shuttle_walk_time'],
+                         listing['shuttle_stop'],
+                         listing['shuttle_dist'])
+
+    desc3 = '{0:2.0f} min walk to {1} stop ({2:2.2f} mi)\n'
+    desc3 = desc3.format(listing['transit_walk_time'],
+                         listing['transit_stop'],
+                         listing['transit_dist'])
+
+    desc4 = '<{0}>'.format(listing['url'])
 
     sc.api_call(
-        'chat.postMessage', channel=channel, text=desc1 + desc2 + desc3,
+        'chat.postMessage', channel=channel, text=desc1 + desc2 + desc3 + desc4,
         username='cl_rooms', icon_emoji=':house:'
     )
 
 
 def closest_stop(geotag, stops):
     """
-    Find closest stop to a location.
+    Find closest stop to a location. Uses Haversine distance to pick the
+    stop, but returns the walking distance and time from Google Maps.
     :param geotag: 
     :param stops: 
     :return: 
     """
     stop_name = ''
     closest_dist = float('inf')
+    closest_coords = None
+
     for stop, coords in stops.items():
         dist = coord_distance(coords[0], coords[1], geotag[0], geotag[1])
         if dist < closest_dist:
             stop_name = stop
             closest_dist = dist
+            closest_coords = coords
 
-    return stop_name, closest_dist
+    gmaps = googlemaps.Client(key=settings.GOOGLEMAPS_TOKEN)
+    result = gmaps.distance_matrix(geotag, closest_coords, mode='walking')
+    walk_time = result['rows'][0]['elements'][0]['duration']['value']
+    walk_time /= 60  # convert s to min
+    walk_dist = result['rows'][0]['elements'][0]['distance']['value']
+    walk_dist *= 0.000621371  # convert m to mi
+
+    return stop_name, walk_dist, walk_time
 
 
 def find_points_of_interest(geotag, location):
@@ -86,8 +103,9 @@ def find_points_of_interest(geotag, location):
     :return: A dictionary containing annotations.
     """
 
-    fields = ['neighborhood', 'transit_stop', 'transit_dist', 'shuttle_stop',
-              'shuttle_dist']
+    fields = ['neighborhood', 'transit_stop', 'transit_dist',
+              'transit_walk_time', 'shuttle_stop', 'shuttle_dist',
+              'shuttle_walk_time']
 
     if geotag is not None:
         neighborhood = ''
@@ -106,17 +124,18 @@ def find_points_of_interest(geotag, location):
                     neighborhood = hood
 
         # Find the closest transit stations.
-        transit_stop, transit_dist = closest_stop(geotag,
-                                                  settings.BART_STATIONS)
+        transit_stop, transit_dist, transit_walk_time = \
+            closest_stop(geotag, settings.BART_STATIONS)
 
         # Find the closest shuttle stop.
-        shuttle_stop, shuttle_dist = closest_stop(geotag,
-                                                  settings.SHUTTLE_STOPS)
+        shuttle_stop, shuttle_dist, shuttle_walk_time = \
+            closest_stop(geotag, settings.SHUTTLE_STOPS)
 
-        values = [neighborhood, transit_stop, transit_dist, shuttle_stop,
-                  shuttle_dist]
+        values = [neighborhood, transit_stop, transit_dist, transit_walk_time,
+                  shuttle_stop, shuttle_dist, shuttle_walk_time]
 
     else:
-        values = ['', '', float('inf'), '', float('inf')]
+        values = ['', '', float('inf'), float('inf'), '', float('inf'),
+                  float('inf')]
 
     return dict(zip(fields, values))

@@ -125,8 +125,10 @@ def scrape(site, area, category, min_price, max_price):
             session.add(listing)
             session.commit()
 
-            # Return the result if it's near a shuttle stop.
-            if result['shuttle_dist'] < settings.MAX_SHUTTLE_DIST:
+            # Return the result if it's near a shuttle stop and in a
+            # desired neighborhood. Adjust requirements to your liking.
+            if (result['shuttle_walk_time'] < settings.MAX_SHUTTLE_WALK_TIME
+                    and len(result['neighborhood']) > 0):
                 results.append(result)
 
     return results

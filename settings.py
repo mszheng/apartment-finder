@@ -111,11 +111,12 @@ NEIGHBORHOODS = [
 # The farthest you want to live from a transit stop.
 MAX_TRANSIT_DIST = 1.5  # miles
 MAX_SHUTTLE_DIST = 0.75  # miles
+MAX_SHUTTLE_WALK_TIME = 15.0  # minutes
 
 
 # Transit stations you want to check against.  Every coordinate here will be
 # checked against each listing, and the closest station name will be added to
-#  the result and posted into Slack.
+# the result and posted into Slack.
 
 BART_STATIONS = {
     '12th St. Oakland City Center': (37.803664, -122.271604),
@@ -173,7 +174,7 @@ SHUTTLE_STOPS = None  # load from private.py
 
 # The Craigslist section underneath housing that you want to search in. For
 # instance, https://sfbay.craigslist.org/search/apa find apartments for rent.
-#  https://sfbay.craigslist.org/search/sub finds sublets. You only need the
+# https://sfbay.craigslist.org/search/sub finds sublets. You only need the
 # last 3 letters of the URLs.
 CRAIGSLIST_HOUSING_SECTION = ['roo', 'apa']
 
