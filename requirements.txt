@@ -3,3 +3,5 @@ googlemaps
 sqlalchemy
 python-dateutil
 slackclient
+requests
+beautifulsoup4

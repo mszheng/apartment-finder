@@ -1,6 +1,8 @@
 import settings
 import math
 import googlemaps
+import requests
+from bs4 import BeautifulSoup
 
 
 def coord_distance(lat1, lon1, lat2, lon2):
@@ -116,7 +118,7 @@ def find_points_of_interest(geotag, location):
             if hood.lower() in location.lower():
                 neighborhood = location
 
-        # If neighborhood not labled, look to see if the listing is in any of
+        # If neighborhood not labeled, look to see if the listing is in any of
         # the manual neighborhood boxes we defined.
         if len(neighborhood) == 0:
             for hood, box_coords in settings.BOXES.items():
@@ -139,3 +141,20 @@ def find_points_of_interest(geotag, location):
                   float('inf')]
 
     return dict(zip(fields, values))
+
+
+def desirable(url):
+    """
+    Gets post text and checks for some key words we don't want.
+    :param url: 
+    :return: 
+    """
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    text = (soup.find(id='titletextonly').get_text()
+            + soup.find(id='postingbody').get_text())
+
+    return not any(
+        [True if phrase in text.lower() else False
+         for phrase in settings.BAD_WORDS]
+    )

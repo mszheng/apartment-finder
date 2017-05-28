@@ -83,7 +83,7 @@ BOXES = {
 NEIGHBORHOODS = [
     'alamo square / nopa',
     'castro / upper market',
-    'cole valley / ashbury hts',
+    # 'cole valley / ashbury hts',
     'downtown / civic / van ness',
     'financial district',
     'haight ashbury',
@@ -97,10 +97,10 @@ NEIGHBORHOODS = [
     'mission district',
     'nob hill',
     'noe valley',
-    'north beach / telegraph hill',
+    # 'north beach / telegraph hill',
     'pacific heights',
     'potrero hill',
-    'russian hill',
+    # 'russian hill',
     'SOMA / south beach',
     'USF / panhandle',
 ]
@@ -111,7 +111,7 @@ NEIGHBORHOODS = [
 # The farthest you want to live from a transit stop.
 MAX_TRANSIT_DIST = 1.5  # miles
 MAX_SHUTTLE_DIST = 0.75  # miles
-MAX_SHUTTLE_WALK_TIME = 15.0  # minutes
+MAX_SHUTTLE_WALK_TIME = 13.0  # minutes
 
 
 # Transit stations you want to check against.  Every coordinate here will be
@@ -169,6 +169,13 @@ BART_STATIONS = {
 
 SHUTTLE_STOPS = None  # load from private.py
 
+## Filter terms
+BAD_WORDS = [
+    'hotel',
+    'for female',
+    'summer rental',
+    'short term only',
+]
 
 ## Search type preferences
 

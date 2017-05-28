@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Float, Boolean
 from sqlalchemy.orm import sessionmaker
 from dateutil.parser import parse
-from util import post_listing_to_slack, find_points_of_interest
+from util import post_listing_to_slack, find_points_of_interest, desirable
 from slackclient import SlackClient
 import time
 import settings
@@ -128,7 +128,9 @@ def scrape(site, area, category, min_price, max_price):
             # Return the result if it's near a shuttle stop and in a
             # desired neighborhood. Adjust requirements to your liking.
             if (result['shuttle_walk_time'] < settings.MAX_SHUTTLE_WALK_TIME
-                    and len(result['neighborhood']) > 0):
+                    and len(result['neighborhood']) > 0
+                    and result['has_image']
+                    and desirable(result['url'])):
                 results.append(result)
 
     return results
